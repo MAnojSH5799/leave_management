@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { Button, Table } from 'react-bootstrap';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const LeaveApplication = () => {
   const [employee, setEmployee] = useState([]);
@@ -22,10 +22,13 @@ const LeaveApplication = () => {
 
   const handleApproved = (id) => {
     const data = {
-      status: "Approved"
+      status: "Approved",
     };
     axios
-      .put(`https://leave-management-backend-three.vercel.app/leave_approve/${id}`, { data })
+      .put(
+        `https://leave-management-backend-three.vercel.app/leave_approve/${id}`,
+        { data }
+      )
       .then((result) => {
         if (result.data.Status) {
           alert("Approved Leave successfully");
@@ -39,10 +42,13 @@ const LeaveApplication = () => {
 
   const handleReject = (id) => {
     const data = {
-      status: "Reject"
+      status: "Reject",
     };
     axios
-      .put(`https://leave-management-backend-three.vercel.app/leave_reject/${id}`, { data })
+      .put(
+        `https://leave-management-backend-three.vercel.app/leave_reject/${id}`,
+        { data }
+      )
       .then((result) => {
         if (result.data.Status) {
           alert("Reject Leave successfully");
@@ -56,16 +62,16 @@ const LeaveApplication = () => {
 
   const getStatusColor = (status) => {
     const lowerCaseStatus = status.toLowerCase();
-  
+
     switch (lowerCaseStatus) {
       case "pending":
-        return "warning"; 
+        return "warning";
       case "reject":
-        return "danger"; 
+        return "danger";
       case "approved":
-        return "success"; 
+        return "success";
       default:
-        return "dark"; 
+        return "dark";
     }
   };
 
@@ -78,9 +84,12 @@ const LeaveApplication = () => {
       </Row>
       <Row className="mt-3">
         <Col xs={12} className="">
-        <Link to="/dashboard/employee" className="btn btn-secondary btn-block mr-5">
-        Back
-      </Link>
+          <Link
+            to="/dashboard/employee"
+            className="btn btn-secondary btn-block mr-5"
+          >
+            Back
+          </Link>
         </Col>
       </Row>
       <Row className="mt-3">
@@ -107,11 +116,18 @@ const LeaveApplication = () => {
                   <td>{e.enddate}</td>
                   <td>{e.reason}</td>
                   <td>
-                    <span className={`badge bg-${getStatusColor(e.status)} fs-6`}>{e.status}</span>
+                    <span
+                      className={`badge bg-${getStatusColor(e.status)} fs-6`}
+                    >
+                      {e.status}
+                    </span>
                   </td>
                   <td>{e.leaves_days}</td>
                   <td>
-                    <Link to={`/dashboard/leave_form/${e.id}`} className="btn btn-info btn-sm me-2">
+                    <Link
+                      to={`/dashboard/leave_form/${e.id}`}
+                      className="btn btn-info btn-sm me-2"
+                    >
                       Edit
                     </Link>
                     <Button
@@ -119,10 +135,16 @@ const LeaveApplication = () => {
                       size="sm"
                       className="me-2"
                       onClick={() => handleApproved(e.id)}
+                      disabled={e.status === "Approved"}
                     >
                       Approve
                     </Button>
-                    <Button variant="danger" size="sm" onClick={() => handleReject(e.id)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleReject(e.id)}
+                      disabled={e.status === "Reject"}
+                    >
                       Reject
                     </Button>
                   </td>
